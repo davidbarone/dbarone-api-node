@@ -1,0 +1,19 @@
+{
+  "name": "dbarone-api",
+  "version": "1.0.0",
+  "description": "RESTful API for dbarone.com web site.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
+  },
+  "author": "david barone",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^8.1.0",
+    "express": "^4.17.1",
+    "nodemon": "^1.19.3",
+    "pg": "^7.12.1"
+  }
+}
