@@ -26,8 +26,17 @@ app.get("/", (request, response) => {
   response.json({ info: "Node.js, Express, and Postgres API" });
 });
 
-app.get("/api/posts", db.getPosts);
-app.get("/api/posts/:id", db.getSinglePost);
+app
+  .route("/api/posts")
+  .get(db.getPosts)
+  .post(db.createPost);
+
+app
+  .route("/api/posts/:id")
+  .get(db.getPost)
+  .delete(db.deletePost)
+  .put(db.updatePost);
+
 app.get("/api/resources", db.getResources);
 app.get("/api/resources/:id", db.getSingleResource);
 
