@@ -29,14 +29,12 @@ const createPost = (req, res) => {
     head,
     posttype,
     parentid,
-    updateddt,
-    updatedby,
     publisheddt,
     deleted
   } = req.body;
 
   pool.query(
-    "INSERT INTO post (title, teaser, content, code, style, head, posttype, parentid, updateddt, updatedby, publisheddt, deleted) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)",
+    "INSERT INTO post (title, teaser, content, code, style, head, posttype, parentid, updateddt, updatedby, publisheddt, deleted) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, NOW(), 'system', $9, $10)",
     [
       title,
       teaser,
@@ -46,8 +44,6 @@ const createPost = (req, res) => {
       head,
       posttype,
       parentid,
-      updateddt,
-      updatedby,
       publisheddt,
       deleted
     ],
@@ -71,7 +67,7 @@ const getPost = (req, res) => {
 };
 
 const updatePost = (req, res) => {
-  const id = parseInt(request.params.id);
+  const id = parseInt(req.params.id);
   const {
     title,
     teaser,
@@ -81,14 +77,12 @@ const updatePost = (req, res) => {
     head,
     posttype,
     parentid,
-    updateddt,
-    updatedby,
     publisheddt,
     deleted
   } = req.body;
 
   pool.query(
-    "UPDATE post SET title = $1, teaser = $2, content = $3, code = $4, style = $5, head = $6, posttype = $7, parentid = $8, updateddt = $9, updatedby = $10, publisheddt = $11, deleted = $12) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)",
+    "UPDATE post SET title = $1, teaser = $2, content = $3, code = $4, style = $5, head = $6, posttype = $7, parentid = $8, updateddt = NOW(), updatedby = 'SYSTEM', publisheddt = $9, deleted = $10 WHERE ID = $11",
     [
       title,
       teaser,
@@ -98,10 +92,9 @@ const updatePost = (req, res) => {
       head,
       posttype,
       parentid,
-      updateddt,
-      updatedby,
       publisheddt,
-      deleted
+      deleted,
+      id
     ],
     (error, results) => {
       if (error) {
@@ -134,12 +127,34 @@ const getResources = (req, res) => {
   );
 };
 
-const getSingleResource = (req, res) => {
+const getResource = (req, res) => {
   const id = parseInt(req.params.id);
 
   pool.query(
     'SELECT filename, "mediaType", data FROM resource WHERE id = $1',
     [id],
+    (error, results) => {
+      if (error) {
+        throw error;
+      }
+
+      const row = results.rows[0];
+
+      res.writeHead(200, {
+        "Content-Type": `${row.mediaType}`,
+        "Content-Disposition": `filename=\"${row.filename}\"`
+      });
+      res.end(row.data);
+    }
+  );
+};
+
+const getResourceByName = (req, res) => {
+  const filename = req.params.filename;
+
+  pool.query(
+    'SELECT filename, "mediaType", data FROM resource WHERE filename = $1',
+    [filename],
     (error, results) => {
       if (error) {
         throw error;
@@ -166,5 +181,6 @@ module.exports = {
 
   // Resources
   getResources,
-  getSingleResource
+  getResource,
+  getResourceByName
 };

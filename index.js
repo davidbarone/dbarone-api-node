@@ -38,7 +38,8 @@ app
   .put(db.updatePost);
 
 app.get("/api/resources", db.getResources);
-app.get("/api/resources/:id", db.getSingleResource);
+app.get("/api/resources/:id", db.getResource);
+app.get("/api/resourcesByName/:filename", db.getResourceByName);
 
 app.listen(port, () => {
   console.log(`App running on port ${port}.`);
