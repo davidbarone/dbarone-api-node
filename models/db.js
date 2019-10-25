@@ -10,12 +10,42 @@ const pool = new Pool({
   password: process.env.DB_PASSWORD
 });
 
+///////////////////////////////////
+// Creates user and returns new id.
+///////////////////////////////////
+const createUser = async user => {
+  try {
+    const results = await pool.query(
+      'INSERT INTO "user" (email, name, password, role) VALUES ($1, $2, $3, $4) RETURNING id',
+      [user.email, user.name, user.password, user.role]
+    );
+    const id = results.rows[0].id;
+
+    return results.rows[0].id;
+  } catch (err) {
+    throw Error(err);
+  }
+};
+
+const getUser = async id => {
+  try {
+    const results = await pool.query(
+      'SELECT id, email, name, role FROM "user" WHERE ID = $1',
+      [id]
+    );
+    return results.rows[0];
+  } catch (err) {
+    throw Error(err);
+  }
+};
+
 const getPosts = (req, res) => {
   pool.query("SELECT id, title, teaser FROM post", (error, results) => {
     if (error) {
       throw error;
     }
     res.status(200).json(results.rows);
+    console.log("here");
   });
 };
 
@@ -172,6 +202,10 @@ const getResourceByName = (req, res) => {
 };
 
 module.exports = {
+  // Users
+  createUser,
+  getUser,
+
   // Posts
   getPosts, // LIST
   createPost, // C
