@@ -8,9 +8,16 @@ if (process.env.NODE_ENV !== "production") {
   dotenv.config();
 }
 
-const userRoutes = require('./routes/user');
-const postRoutes = require('./routes/post');
-const resourceRoutes = require('./routes/resource');
+// Database (Knex / Objection)
+const Knex = require("knex");
+const connection = require("./knexfile");
+const { Model } = require("objection");
+const knexConnection = Knex(connection);
+Model.knex(knexConnection);
+
+const userRoutes = require("./routes/user");
+const postRoutes = require("./routes/post");
+const resourceRoutes = require("./routes/resource");
 const db = require("./models/db");
 const app = express();
 
