@@ -15,10 +15,9 @@ const { Model } = require("objection");
 const knexConnection = Knex(connection);
 Model.knex(knexConnection);
 
-const userRoutes = require("./routes/user");
-const postRoutes = require("./routes/post");
-const resourceRoutes = require("./routes/resource");
-const db = require("./models/db");
+const userRoutes = require("./routes/user-routes");
+const postRoutes = require("./routes/post-routes");
+const resourceRoutes = require("./routes/resource-routes");
 const app = express();
 
 const port = process.env.PORT || 3000;
