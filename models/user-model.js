@@ -15,8 +15,9 @@ class User extends Model {
   generateAuthToken = () => {
     try {
       const token = jwt.sign(
-        { id: this.id, role: this.role },
-        process.env.APP_SECRET_KEY
+        { id: this.id, email: this.email, name: this.name, role: this.role },
+        process.env.APP_SECRET_KEY,
+        { expiresIn: 60 * 60 * 8 }
       );
       return token;
     } catch (err) {

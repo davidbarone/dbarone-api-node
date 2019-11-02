@@ -28,7 +28,8 @@ app.use([
     extended: true
   }),
   cors({
-    origin: "http://localhost:3000"
+    origin: "http://localhost:3000",
+    exposedHeaders: ["x-access-token"]
   })
 ]);
 

@@ -4,7 +4,14 @@ const secretKey = process.env.APP_SECRET_KEY;
 
 module.exports = function(req, res, next) {
   //get the token from the header if present
-  const token = req.headers["x-access-token"] || req.headers["authorization"];
+  console.log(req.headers);
+  let token = req.headers["x-auth-token"] || req.headers["authorization"];
+
+  if (token.startsWith("Bearer ")) {
+    // Remove Bearer from string
+    token = token.slice(7, token.length).trim();
+  }
+
   //if no token found, return response (without going to the next middelware)
   if (!token) return res.status(401).send("Access denied. No token provided.");
 
