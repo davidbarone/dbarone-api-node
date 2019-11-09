@@ -1,7 +1,7 @@
 const Resource = require("../models/resource-model");
 
 class ResourceController {
-  static getResources = async (req, res) => {
+  static async getResources(req, res) {
     try {
       const resources = await Resource.query().select(
         "id",
@@ -16,19 +16,9 @@ class ResourceController {
       res.status(500).send(err);
       throw new Error("whoops");
     }
-  };
+  }
 
-  static createPost = async (req, res) => {
-    try {
-      const post = await Post.query().insert(req.body);
-      res.status(201).json(post);
-    } catch (err) {
-      res.status(500).send(err);
-      throw new Error("whoops");
-    }
-  };
-
-  static getResource = async (req, res) => {
+  static async getResource(req, res) {
     try {
       const id = parseInt(req.params.id);
       const resource = await Resource.query().findById(id);
@@ -41,9 +31,9 @@ class ResourceController {
       res.status(500).send(err);
       throw new Error("whoops");
     }
-  };
+  }
 
-  static getResourceByName = async (req, res) => {
+  static async getResourceByName(req, res) {
     try {
       const name = req.params.file_name;
       const resource = await Resource.query()
@@ -58,31 +48,7 @@ class ResourceController {
       res.status(500).send(err);
       throw new Error("whoops");
     }
-  };
-
-  static updatePost = async (req, res) => {
-    try {
-      const id = parseInt(req.params.id);
-      const rows = await Post.query()
-        .findById(id)
-        .patch(req.body);
-      res.status(200).send("Updated OK");
-    } catch (err) {
-      res.status(500).send(err);
-      throw new Error("whoops");
-    }
-  };
-
-  static deletePost = async (req, res) => {
-    try {
-      const id = parseInt(req.params.id);
-      const rows = await Post.query().deleteById(id);
-      res.status(200).send("Deleted OK");
-    } catch (err) {
-      res.status(500).send(err);
-      throw new Error("whoops");
-    }
-  };
+  }
 }
 
 module.exports = ResourceController;

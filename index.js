@@ -33,9 +33,9 @@ app.use([
   })
 ]);
 
-app.use("/api/users", userRoutes);
-app.use("/api/posts", postRoutes);
-app.use("/api/resources", resourceRoutes);
+app.use("/users", userRoutes);
+app.use("/posts", postRoutes);
+app.use("/resources", resourceRoutes);
 
 app.get("/", (request, response) => {
   response.json({ info: "Node.js, Express, and Postgres API" });

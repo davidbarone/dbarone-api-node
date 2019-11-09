@@ -12,7 +12,7 @@ class User extends Model {
   }
 
   // Generates AUTH token
-  generateAuthToken = () => {
+  generateAuthToken() {
     try {
       const token = jwt.sign(
         { id: this.id, email: this.email, name: this.name, role: this.role },
@@ -23,7 +23,7 @@ class User extends Model {
     } catch (err) {
       throw new Error(err);
     }
-  };
+  }
 
   static get jsonSchema() {
     return {

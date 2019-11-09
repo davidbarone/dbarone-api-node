@@ -2,7 +2,7 @@ const User = require("../models/user-model");
 const bcrypt = require("bcryptjs");
 
 class UserController {
-  static createUser = async (req, res) => {
+  static async createUser(req, res) {
     try {
       const u = req.body;
       u.password = await bcrypt.hash(u.password, 10);
@@ -22,9 +22,9 @@ class UserController {
       res.status(500).send(err);
       throw new Error(err);
     }
-  };
+  }
 
-  static getUser = async (req, res) => {
+  static async getUser(req, res) {
     try {
       const id = parseInt(req.params.id);
       const user = await User.query()
@@ -35,9 +35,9 @@ class UserController {
       res.status(500).send(err);
       throw new Error("whoops");
     }
-  };
+  }
 
-  static login = async (req, res) => {
+  static async login(req, res) {
     try {
       const body = req.body;
       console.log(req);
@@ -89,7 +89,7 @@ class UserController {
       res.status(500).send(err);
       throw new Error(err);
     }
-  };
+  }
 }
 
 module.exports = UserController;
