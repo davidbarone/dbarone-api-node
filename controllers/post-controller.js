@@ -36,6 +36,7 @@ class PostController {
 
   static async updatePost(req, res) {
     try {
+      console.log(req.body.parent_id);
       const id = parseInt(req.params.id);
       const rows = await Post.query()
         .findById(id)
@@ -43,7 +44,7 @@ class PostController {
       res.status(200).send("Updated OK");
     } catch (err) {
       res.status(500).send(err);
-      throw new Error("whoops");
+      throw new Error(err);
     }
   }
 
