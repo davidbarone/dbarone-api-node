@@ -13,11 +13,13 @@ class PostController {
 
   static async createPost(req, res) {
     try {
+      req.body.updated_dt = new Date().toISOString();
+      req.body.updated_by = req.user.name;
       const post = await Post.query().insert(req.body);
       res.status(201).json(post);
     } catch (err) {
       res.status(500).send(err);
-      throw new Error("whoops");
+      throw new Error(err);
     }
   }
 

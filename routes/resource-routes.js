@@ -4,6 +4,6 @@ const resourceController = require("../controllers/resource-controller");
 
 router.get("/", resourceController.getResources);
 router.get("/:id", resourceController.getResource);
-router.get("/filename/:filename", resourceController.getResourceByName);
+router.get("/name/:file_name", resourceController.getResourceByName);
 
 module.exports = router;

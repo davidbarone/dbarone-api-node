@@ -36,14 +36,17 @@ class ResourceController {
   static async getResourceByName(req, res) {
     try {
       const name = req.params.file_name;
+      console.log(name);
       const resource = await Resource.query()
         .where({ file_name: name })
         .first();
+
       res.writeHead(200, {
         "Content-Type": `${resource.media_type}`,
         "Content-Disposition": `filename=\"${resource.file_name}\"`
       });
       res.end(resource.data);
+      //res.end("alert('This is loaded!');");
     } catch (err) {
       res.status(500).send(err);
       throw new Error("whoops");

@@ -4,10 +4,9 @@ const secretKey = process.env.APP_SECRET_KEY;
 
 module.exports = function(req, res, next) {
   //get the token from the header if present
-  console.log(req.headers);
   let token = req.headers["x-auth-token"] || req.headers["authorization"];
 
-  if (token.startsWith("Bearer ")) {
+  if (token && token.startsWith("Bearer ")) {
     // Remove Bearer from string
     token = token.slice(7, token.length).trim();
   }
