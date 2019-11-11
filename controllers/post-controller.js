@@ -3,7 +3,7 @@ const Post = require("../models/post-model");
 class PostController {
   static async getPosts(req, res) {
     try {
-      const posts = await Post.query();
+      const posts = await Post.query().orderBy("published_dt");
       res.status(200).json(posts);
     } catch (err) {
       res.status(500).send(err);
