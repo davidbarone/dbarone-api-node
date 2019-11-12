@@ -28,7 +28,11 @@ app.use([
     extended: true
   }),
   cors({
-    origin: "http://localhost:3000",
+    origin: [
+      "http://localhost:3000",
+      "https://dbarone.com",
+      "https://www.dbarone.com"
+    ],
     exposedHeaders: ["x-access-token"]
   })
 ]);
