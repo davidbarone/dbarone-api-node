@@ -14,11 +14,11 @@ class Resource extends Model {
     return {
       type: "object",
       required: [
-        "filename",
+        "file_name",
         "media_type",
         "updated_dt",
         "updated_by",
-        "published_dt",
+        "updated_dt",
         "deleted"
       ],
 

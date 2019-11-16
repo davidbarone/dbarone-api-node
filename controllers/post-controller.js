@@ -34,6 +34,48 @@ class PostController {
     }
   }
 
+  static async getRelated(req, res) {
+    try {
+      const id = parseInt(req.params.id);
+      const post = await Post.query().findById(id);
+      const parent_id = post.parent_id;
+      const host = req.get("host");
+      const protocol = req.protocol;
+
+      // Get parent post, sibling posts and children posts
+      const parent = await Post.query()
+        .findById(parent_id)
+        .select(["id", "title"]);
+
+      const siblings = await Post.query()
+        .where("parent_id", parent_id)
+        .whereNotNull("parent_id")
+        .orderBy("title")
+        .select(["id", "title"]);
+      siblings.map(p => (p.url = `${protocol}://${host}/posts/${p.id}`));
+
+      const children = await Post.query()
+        .where("parent_id", id)
+        .orderBy("title")
+        .select(["id", "title"]);
+      children.map(p => (p.url = `${protocol}://${host}/posts/${p.id}`));
+
+      res.status(200).json({
+        hasRelations: !!(
+          parent ||
+          (Array.isArray(siblings) && siblings.length) ||
+          (Array.isArray(children) && children.length)
+        ),
+        parent: parent || null,
+        siblings: siblings,
+        children: children
+      });
+    } catch (err) {
+      res.status(500).send(err);
+      throw new Error(err);
+    }
+  }
+
   static async updatePost(req, res) {
     try {
       console.log(req.body.parent_id);
