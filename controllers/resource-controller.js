@@ -17,7 +17,7 @@ class ResourceController {
 
   static async uploadResource(req, res) {
     var form = new formidable.IncomingForm();
-    form.parse(req, function(err, fields, files) {
+    form.parse(req, function (err, fields, files) {
       // uploaded file automatically saved to temp folder on server first
       console.log(files);
       const path = files.resourceFile.path;
@@ -30,12 +30,12 @@ class ResourceController {
         data: "\\x" + data.toString("hex"),
         updated_dt: new Date().toISOString(),
         updated_by: req.user.name,
-        deleted: false
+        deleted: false,
       };
       fs.unlinkSync(path);
       const newResource = Resource.query()
         .insert(resource)
-        .then(async result => {
+        .then(async (result) => {
           // Get new item (minus data field)\
           const resources = await Resource.query().select(
             "id",
@@ -46,7 +46,7 @@ class ResourceController {
             "updated_by"
           );
 
-          const newItem = resources.filter(r => r.id === result.id)[0];
+          const newItem = resources.filter((r) => r.id === result.id)[0];
           res.status(201).json(newItem);
           res.end();
         });
@@ -77,7 +77,7 @@ class ResourceController {
       const resource = await Resource.query().findById(id);
       res.writeHead(200, {
         "Content-Type": `${resource.media_type}`,
-        "Content-Disposition": `filename=\"${resource.file_name}\"`
+        "Content-Disposition": `filename=\"${resource.file_name}\"`,
       });
       res.end(resource.data);
     } catch (err) {
@@ -96,7 +96,7 @@ class ResourceController {
 
       res.writeHead(200, {
         "Content-Type": `${resource.media_type}`,
-        "Content-Disposition": `filename=\"${resource.file_name}\"`
+        "Content-Disposition": `filename=\"${resource.file_name}\"`,
       });
       res.end(resource.data);
       //res.end("alert('This is loaded!');");
